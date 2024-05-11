@@ -143,12 +143,43 @@ const categoryOptionLabels = [
 ];
 //#endregion
 
+//#region Filtering
+function applySearchFilter(list, searchValue) {
+  return list.filter((item) =>
+    item.nameLabel.toLowerCase().includes(searchValue.toLowerCase())
+  );
+}
+
+function applyDisplayFilter(list, displayValue) {
+  if (displayValue === "Any") {
+    return list;
+  }
+  return list.filter((product) => product.displayLabel === displayValue);
+}
+
+function applyCategoryFilter(list, categoryValue) {
+  if (categoryValue === "Any") {
+    return list;
+  }
+  return list.filter((product) => product.keywordList?.includes(categoryValue));
+}
+
+//#endregion
+
 export default function App() {
   //#region Logic
   const [filteredList, setFilteredList] = useState(initialProducts);
   const [selectedItemType, setSelectedItemType] = useState("Product");
-
   const [total, setTotal] = useState(0.0);
+  const [numBoxesInCart, setNumBoxesInCart] = useState(0);
+  const [displayDropdownValue, setDisplayDropdownValue] = useState(
+    displayOptionLabels[0].label
+  );
+  const [categoryDropdownValue, setCategoryDropdownValue] = useState(
+    categoryOptionLabels[0].label
+  );
+  const [searchInputValue, setSearchInputValue] = useState("");
+
   function handleOnAddToCart(totalAmountOfItemInDollars, step) {
     setTotal((prevTotal) => {
       const newTotal = prevTotal + Number(totalAmountOfItemInDollars);
@@ -156,74 +187,11 @@ export default function App() {
     });
     setNumBoxesInCart((prevBoxesInCart) => prevBoxesInCart + step);
   }
-  const [numBoxesInCart, setNumBoxesInCart] = useState(0);
-
   function handleProductButtonClicked() {
     if (selectedItemType === "Product") {
       return;
     } else if (selectedItemType === "Furniture") {
       setSelectedItemType("Product");
-
-      /* README
-      If here, then we were viewing the furniture list when we clicked the Product button.
-      Before we change the view to display Products, we need to apply the active filters to it.
-      We don't want to set the filtered list twice, because that would render everything twice.
-      So we make a temp filtered list, then set it once we've applied all filters to that temp.
-      */
-      let tempList = initialProducts;
-
-      // Apply the search filter
-      if (searchInputValue.length > 0) {
-        tempList = tempList.filter((product) =>
-          product.nameLabel
-            .toLowerCase()
-            .includes(searchInputValue.toLowerCase())
-        );
-      }
-
-      // Apply the display filter
-      switch (displayDropdownValue) {
-        case "Shelf":
-          tempList = tempList.filter(
-            (product) => product.displayLabel === "Shelf"
-          );
-          break;
-        case "Fridge":
-          tempList = tempList.filter(
-            (product) => product.displayLabel === "Fridge"
-          );
-          break;
-        default:
-          break;
-      }
-
-      // Apply the category filter
-      switch (categoryDropdownValue) {
-        case "Produce":
-          tempList = tempList.filter((product) =>
-            product.keywordList?.includes("Produce")
-          );
-          break;
-        case "Dairy":
-          tempList = tempList.filter((product) =>
-            product.keywordList?.includes("Dairy")
-          );
-          break;
-        case "Beverages":
-          tempList = tempList.filter((product) =>
-            product.keywordList?.includes("Beverages")
-          );
-          break;
-        case "Frozen":
-          tempList = tempList.filter((product) =>
-            product.keywordList?.includes("Frozen")
-          );
-          break;
-        default:
-          break;
-      }
-
-      setFilteredList(tempList);
     }
   }
   function handleFurnitureButtonClicked() {
@@ -231,33 +199,8 @@ export default function App() {
       return;
     } else if (selectedItemType === "Product") {
       setSelectedItemType("Furniture");
-
-      /* README
-      If here, then we were viewing the Product list when we clicked the Furniture button.
-      Display and Category filters don't apply to furnitures, so we can safely just set the filtered list.
-      */
-
-      let tempList = initialFurniture;
-
-      // Apply the search filter
-      if (searchInputValue.length > 0) {
-        tempList = tempList.filter((furniture) =>
-          furniture.nameLabel
-            .toLowerCase()
-            .includes(searchInputValue.toLowerCase())
-        );
-      }
-
-      setFilteredList(tempList);
     }
   }
-
-  const [displayDropdownValue, setDisplayDropdownValue] = useState(
-    displayOptionLabels[0].label
-  );
-  const [categoryDropdownValue, setCategoryDropdownValue] = useState(
-    categoryOptionLabels[0].label
-  );
   function handleDropdownValueChange(selectedValue, dropdownType) {
     if (dropdownType === "display") {
       setDisplayDropdownValue(selectedValue);
@@ -265,91 +208,35 @@ export default function App() {
       setCategoryDropdownValue(selectedValue);
     }
   }
-  /*README
-  //--Figuring this out was a major pain in the ass.
-  //--React batches state updates internally,so you can't read a state value after you set it.
-  //--This means I need to fix my other code that attempts to do that as well.
-  //--This code will execute any time the states in the array are updated.
-  */
+
+  //#region useEffect hook for filtering
   useEffect(() => {
-    let tempList = initialProducts;
+    /* README filtering logic.
+     * Order of ops:
+     * 0.)Check if we are on the Product or Furniture view.
+     * 1.)Make a new tempList for gathering filtered results.
+     * 2.)Apply the display dropdown filter by filtering on the tempList.
+     * 3.)Apply the category dropdown filter by filtering on the tempList.
+     * 4.)Apply the search filter by filtering on the tempList.
+     * 5.)Use the useState to set the value of the filteredList.
+     *
+     * How it works:
+     * It works largely in part due to React managing the state of the filteredList.
+     * Basically once filteredList is set from calling setFilteredList, it re-renders my scroll view of ItemComponents.
+     * The fucky thing about this is this useEffect hook.
+     * The code in here will run whenever the passed-in array values have their state updated.
+     */
 
-    if (selectedItemType === "Furniture") return;
-
-    if (displayDropdownValue !== "Any") {
-      tempList = tempList.filter(
-        (product) => product.displayLabel === displayDropdownValue
-      );
-    }
-
-    if (categoryDropdownValue !== "Any") {
-      tempList = tempList.filter((product) =>
-        product.keywordList?.includes(categoryDropdownValue)
-      );
-    }
-
-    setFilteredList(tempList);
-  }, [displayDropdownValue, categoryDropdownValue, selectedItemType]);
-  //#endregion
-
-  //#region Search Bar State
-  const [searchInputValue, setSearchInputValue] = useState("");
-  useEffect(() => {
     let tempList = null;
     if (selectedItemType === "Product") {
       tempList = initialProducts;
-
-      // Apply the display filter
-      switch (displayDropdownValue) {
-        case "Shelf":
-          tempList = tempList.filter(
-            (product) => product.displayLabel === "Shelf"
-          );
-          break;
-        case "Fridge":
-          tempList = tempList.filter(
-            (product) => product.displayLabel === "Fridge"
-          );
-          break;
-        default:
-          break;
-      }
-
-      // Apply the category filter
-      switch (categoryDropdownValue) {
-        case "Produce":
-          tempList = tempList.filter((product) =>
-            product.keywordList?.includes("Produce")
-          );
-          break;
-        case "Dairy":
-          tempList = tempList.filter((product) =>
-            product.keywordList?.includes("Dairy")
-          );
-          break;
-        case "Beverages":
-          tempList = tempList.filter((product) =>
-            product.keywordList?.includes("Beverages")
-          );
-          break;
-        case "Frozen":
-          tempList = tempList.filter((product) =>
-            product.keywordList?.includes("Frozen")
-          );
-          break;
-        default:
-          break;
-      }
+      tempList = applyDisplayFilter(tempList, displayDropdownValue);
+      tempList = applyCategoryFilter(tempList, categoryDropdownValue);
     } else if (selectedItemType === "Furniture") {
       tempList = initialFurniture;
     }
 
-    // Apply the search filter
-    if (searchInputValue.length > 0) {
-      tempList = tempList.filter((item) =>
-        item.nameLabel.toLowerCase().includes(searchInputValue.toLowerCase())
-      );
-    }
+    tempList = applySearchFilter(tempList, searchInputValue);
 
     setFilteredList(tempList);
   }, [
@@ -358,6 +245,7 @@ export default function App() {
     displayDropdownValue,
     categoryDropdownValue,
   ]);
+  //#endregion
   //#endregion
 
   //#region Rendering
