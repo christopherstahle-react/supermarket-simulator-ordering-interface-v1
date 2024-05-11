@@ -1,0 +1,29 @@
+Project Plan:
+
+Step 0.) Draw out the app on the whiteboard so you can reference it as you build.
+
+Step 1.) Create a new react project via the terminal (npx-create-react-app@5 online-shopping-cart-v1)
+
+Step 2.) Plan: I think it will realistically take me a week to complete this. That is my goal. I won’t spend more than a week on this however.
+
+-  What does it mean for this project to be successful ?
+ 	° To have at least 12 unique products - 9 foods and 3 furnitures. (This will also allow me as a bonus to learn how to build UI in a scroll view)
+ 	° To have the items come from a static list. (a stretch goal is to setup a free database and put the items in there)
+ 	° To have css styling that supports a basic desktop-only, single-page that doesn’t need to resize properly when the window’s resized.
+ 	° To have everything feature complete, without bugs.
+
+- What does it mean to be feature complete?
+        ° The Food and Furniture buttons will, onClick, render their respective items correctly in the scroll view and update the category dropdown to that as well.
+	° The Total will be accurate at all times
+	° The number of items count will be accurate at all times
+	° The search functionality will work searching at a per-character. (Ex. Typing “R” or “r” will result in all items with an “R” or”r” in them to show up.)
+	° The search results will depend on the what the Display & Category filters are set to currently. (Ex. Search within the Food or Furniture / fridge or shelf)
+	° The UI on items will subtract or add that respective amount to the cart’s total and the individual total
+
+Step 3.) Create the static layout 
+
+Step 4.) From the top down, begin making the layout dynamic.
+
+Step 5.) Polish up the stylings
+
+Step 6.) Go to any stretch goals you’ve set.
