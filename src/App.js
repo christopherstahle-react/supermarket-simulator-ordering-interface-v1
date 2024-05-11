@@ -166,6 +166,9 @@ function applyCategoryFilter(list, categoryValue) {
 
 //#endregion
 
+/**
+ * SUMMARY: App is the main driver of the program. It holds state datas and renders out all sections of the webpage.
+ */
 export default function App() {
   //#region Logic
   const [filteredList, setFilteredList] = useState(initialProducts);

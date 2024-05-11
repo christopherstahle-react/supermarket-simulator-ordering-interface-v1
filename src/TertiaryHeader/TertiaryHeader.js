@@ -1,11 +1,12 @@
-import { useState } from "react";
 import { SearchBar } from "./SearchBar";
 import { DisplayDropdown } from "./DisplayDropdown";
 import { CategoryDropdown } from "./CategoryDropdown";
 import Divider from "@mui/material/Divider";
 import "./tertiaryHeader.css";
 
-///TertiaryHeader holds the SearchBar, Display && Category filter dropdowns.
+/**
+ * SUMMARY: TertiaryHeader is a section that holds the SearchBar, Display && Category filter dropdowns.
+ */
 export function TertiaryHeader({
   displayOptionLabels,
   categoryOptionLabels,
@@ -20,10 +21,6 @@ export function TertiaryHeader({
   searchInputValue,
   setSearchInputValue,
 }) {
-  //#region Logic
-
-  //#endregion
-
   //#region Rendering
   return (
     <>

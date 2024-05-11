@@ -1,5 +1,7 @@
 import { DynamicDropdown } from "../Reusables/DynamicDropdown";
-
+/**
+ * SUMMARY: CategoryDropdown is a dropdown menu for selecting a filter to apply to the view.
+ */
 export function CategoryDropdown({
   optionLabels,
   onChange,

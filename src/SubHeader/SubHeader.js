@@ -1,10 +1,13 @@
-import { useState } from "react";
 import { ProductButton } from "./ProductButton";
 import { FurnitureButton } from "./FurnitureButton";
-import { Total } from "./Total";
+import { Total } from "./Total.js";
 import Divider from "@mui/material/Divider";
-import "./subHeader.css";
+import "./Styles/subHeader.css";
+import "./Styles/total.css";
 
+/**
+ * SUMMARY: SubHeader is a section below the Header.
+ */
 export function SubHeader({
   total,
   numBoxes,

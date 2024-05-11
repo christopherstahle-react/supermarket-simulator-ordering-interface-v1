@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { ItemContainer } from "../ItemContainer/ItemContainer";
 import "./scrollview.css";
 
@@ -19,9 +18,6 @@ export function ScrollView({ itemList, onAddToCartHandler }) {
         {itemList?.map((item) => (
           <ItemContainer
             item={item}
-            //step={step}
-            //onSubtractItemHandler={handleSubtractItem}
-            //onAddItemHandler={handleAddItem}
             onAddToCartHandler={handleOnAddToCart}
             key={item.key}
           />

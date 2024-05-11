@@ -1,6 +1,7 @@
-import { useState } from "react";
 import { DynamicInputField } from "../Reusables/DynamicInputField";
-
+/**
+ * SUMMARY: SearchBar is a search bar input field for selecting a filter to apply to the view.
+ */
 export function SearchBar({
   initialProducts,
   initialFurniture,
@@ -10,7 +11,6 @@ export function SearchBar({
   searchInputValue,
   setSearchInputValue,
 }) {
-  //const [searchInputValue, setSearchInputValue] = useState("");
   function handleSearchInputChange(e) {
     const userInputValue = e.target.value;
     setSearchInputValue(userInputValue);

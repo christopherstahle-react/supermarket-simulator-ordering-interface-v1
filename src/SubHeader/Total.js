@@ -1,8 +1,8 @@
-import { useState } from "react";
-import "./total.css";
-
+import "./Styles/total.css";
+/**
+ * SUMMARY: Total is a collection of UI that displays cart information.
+ */
 export function Total({ formattedTotal, numBoxes }) {
-  console.log(formattedTotal);
   return (
     <div className="total-container">
       <span className="total-label">Total:</span>
