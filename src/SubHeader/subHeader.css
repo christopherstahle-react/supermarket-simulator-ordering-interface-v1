@@ -1,0 +1,13 @@
+.subheader-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.horizontal-buttons-layout-group {
+  display: flex;
+  justify-content: left;
+  gap: 10px;
+  margin-top: 10px;
+}

@@ -1,0 +1,33 @@
+/* itemAdder.css */
+.item-adder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-subtract-amount {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.subtract-amount,
+.add-amount {
+  cursor: pointer;
+  padding: 5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 25px;
+  font-size: 10px;
+  color: #fff;
+  line-height: 10px;
+  text-align: center;
+  background: #000;
+}
+
+.formatted-total {
+  margin: 5px 0;
+}

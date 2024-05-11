@@ -1,0 +1,8 @@
+.tertiaryheader-container {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 100px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}

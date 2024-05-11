@@ -1,0 +1,42 @@
+.total-container {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.total-label {
+  margin-right: 10px;
+}
+
+.total-amount {
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  padding: 5px 10px;
+  margin-right: 10px;
+}
+
+.num-boxes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: yellow;
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+  margin-left: -10px;
+  margin-bottom: -20px;
+}
+
+.cart-icon {
+  background-color: #e0e0e0;
+  border-radius: 10%;
+  width: 50px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
