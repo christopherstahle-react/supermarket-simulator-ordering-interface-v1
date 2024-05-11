@@ -13,29 +13,30 @@ export function TertiaryHeader({
   displayDropdownValue,
   categoryDropdownValue,
   selectedItemType,
+  initialProducts,
+  filteredList,
+  setFilteredList,
+  initialFurniture,
+  searchInputValue,
+  setSearchInputValue,
 }) {
   //#region Logic
-  /*
-  const [displayDropdownValue, setDisplayDropdownValue] = useState(
-    displayOptionLabels[0].label
-  );
-  const [categoryDropdownValue, setCategoryDropdownValue] = useState(
-    categoryOptionLabels[0].label
-  );
-  const handleDropdownValueChange = (selectedValue, dropdownType) => {
-    if (dropdownType === "display") {
-      setDisplayDropdownValue(selectedValue);
-    } else if (dropdownType === "category") {
-      setCategoryDropdownValue(selectedValue);
-    }
-  };*/
+
   //#endregion
 
   //#region Rendering
   return (
     <>
       <div className="tertiaryheader-container">
-        <SearchBar />
+        <SearchBar
+          initialProducts={initialProducts}
+          filteredList={filteredList}
+          setFilteredList={setFilteredList}
+          initialFurniture={initialFurniture}
+          selectedItemType={selectedItemType}
+          searchInputValue={searchInputValue}
+          setSearchInputValue={setSearchInputValue}
+        />
         <DisplayDropdown
           optionLabels={displayOptionLabels}
           onChange={handleDropdownValueChange}

@@ -170,53 +170,57 @@ export default function App() {
       We don't want to set the filtered list twice, because that would render everything twice.
       So we make a temp filtered list, then set it once we've applied all filters to that temp.
       */
+      let tempList = initialProducts;
 
-      let tempList = filteredList; //--filteredList will be the filtered furnitures at this point.
+      // Apply the search filter
+      if (searchInputValue.length > 0) {
+        tempList = tempList.filter((product) =>
+          product.nameLabel
+            .toLowerCase()
+            .includes(searchInputValue.toLowerCase())
+        );
+      }
 
-      //--Is there string interning in React? Or is this a new string every time this code is hit?
+      // Apply the display filter
       switch (displayDropdownValue) {
-        case "Any":
-          tempList = initialProducts;
-          break;
         case "Shelf":
-          tempList = initialProducts.filter(
+          tempList = tempList.filter(
             (product) => product.displayLabel === "Shelf"
           );
           break;
         case "Fridge":
-          tempList = initialProducts.filter(
+          tempList = tempList.filter(
             (product) => product.displayLabel === "Fridge"
           );
           break;
         default:
-          alert("error 1");
+          break;
       }
 
+      // Apply the category filter
       switch (categoryDropdownValue) {
-        case "Any":
-          break;
         case "Produce":
-          tempList = initialProducts.filter((product) =>
+          tempList = tempList.filter((product) =>
             product.keywordList?.includes("Produce")
           );
           break;
         case "Dairy":
-          tempList = initialProducts.filter((product) =>
+          tempList = tempList.filter((product) =>
             product.keywordList?.includes("Dairy")
           );
           break;
         case "Beverages":
-          tempList = initialProducts.filter((product) =>
+          tempList = tempList.filter((product) =>
             product.keywordList?.includes("Beverages")
           );
           break;
         case "Frozen":
-          tempList = initialProducts.filter((product) =>
+          tempList = tempList.filter((product) =>
             product.keywordList?.includes("Frozen")
           );
           break;
         default:
-          alert("error 2");
+          break;
       }
 
       setFilteredList(tempList);
@@ -233,9 +237,18 @@ export default function App() {
       Display and Category filters don't apply to furnitures, so we can safely just set the filtered list.
       */
 
-      setFilteredList(initialFurniture);
-      //--todo grey out the display and category dropdown when we have selected the furniture type.
-      //--<select disabled={isDropdownDisabled}>
+      let tempList = initialFurniture;
+
+      // Apply the search filter
+      if (searchInputValue.length > 0) {
+        tempList = tempList.filter((furniture) =>
+          furniture.nameLabel
+            .toLowerCase()
+            .includes(searchInputValue.toLowerCase())
+        );
+      }
+
+      setFilteredList(tempList);
     }
   }
 
@@ -279,6 +292,74 @@ export default function App() {
   }, [displayDropdownValue, categoryDropdownValue, selectedItemType]);
   //#endregion
 
+  //#region Search Bar State
+  const [searchInputValue, setSearchInputValue] = useState("");
+  useEffect(() => {
+    let tempList = null;
+    if (selectedItemType === "Product") {
+      tempList = initialProducts;
+
+      // Apply the display filter
+      switch (displayDropdownValue) {
+        case "Shelf":
+          tempList = tempList.filter(
+            (product) => product.displayLabel === "Shelf"
+          );
+          break;
+        case "Fridge":
+          tempList = tempList.filter(
+            (product) => product.displayLabel === "Fridge"
+          );
+          break;
+        default:
+          break;
+      }
+
+      // Apply the category filter
+      switch (categoryDropdownValue) {
+        case "Produce":
+          tempList = tempList.filter((product) =>
+            product.keywordList?.includes("Produce")
+          );
+          break;
+        case "Dairy":
+          tempList = tempList.filter((product) =>
+            product.keywordList?.includes("Dairy")
+          );
+          break;
+        case "Beverages":
+          tempList = tempList.filter((product) =>
+            product.keywordList?.includes("Beverages")
+          );
+          break;
+        case "Frozen":
+          tempList = tempList.filter((product) =>
+            product.keywordList?.includes("Frozen")
+          );
+          break;
+        default:
+          break;
+      }
+    } else if (selectedItemType === "Furniture") {
+      tempList = initialFurniture;
+    }
+
+    // Apply the search filter
+    if (searchInputValue.length > 0) {
+      tempList = tempList.filter((item) =>
+        item.nameLabel.toLowerCase().includes(searchInputValue.toLowerCase())
+      );
+    }
+
+    setFilteredList(tempList);
+  }, [
+    searchInputValue,
+    selectedItemType,
+    displayDropdownValue,
+    categoryDropdownValue,
+  ]);
+  //#endregion
+
   //#region Rendering
   return (
     <div className="App">
@@ -296,6 +377,12 @@ export default function App() {
         displayDropdownValue={displayDropdownValue}
         categoryDropdownValue={categoryDropdownValue}
         selectedItemType={selectedItemType}
+        initialProducts={initialProducts}
+        filteredList={filteredList}
+        setFilteredList={setFilteredList}
+        initialFurniture={initialFurniture}
+        searchInputValue={searchInputValue}
+        setSearchInputValue={setSearchInputValue}
       />
       <ScrollView
         itemList={filteredList}
